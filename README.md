@@ -3,6 +3,21 @@
 Mapping of 3d laser range data from a rotating laser range scanner, e.g., the Velodyne HDL-64E.
 For representing the map, we use surfels that enables fast rendering of the map for point-to-plane ICP.
 
+## Publication
+
+If you use our implementation in your academic work, please cite the corresponding paper:
+
+J. Behley, C. Stachnis. *Efficient Surfel-Based SLAM using 3D Laser Range Data in Urban Environments*, Proc. of Robotics: Science and Systems (RSS), 2018.
+
+The BibTeX entry for the paper is:  
+    
+			@inproceedings{behley2018rss, 
+					author = {Jens Behley and Cyrill Stachniss},
+					title  = {Efficient Surfel-Based SLAM using 3D Laser Range Data in Urban Environments},
+					booktitle = {Proc.~of Robotics: Science and Systems~(RSS)},
+					year = {2018}  
+			}
+
 
 ##  Dependencies
 
@@ -79,5 +94,13 @@ All binaries are copied to the `bin` directory of the source folder of the proje
 
 In the `config` directory, different configuration files are given, which can be used as reference to set parameters for some experiments with other data. Specifying the right "vertical Field-of-View" (`data_fov_up` and `data_fov_down`) and the right number of scan lines (`data_height`) are the most important parameters.
 
-See also the project page for configuration files used for the evaluation in the paper.
+See also the [project page](http://jbehley.github.io/projects/surfel_mapping/) for configuration files used for the evaluation in the paper.
+
+## License
+
+
+Copyright 2018 Jens Behley, University of Bonn.
+
+This project is free software made available under the MIT License. For details see the LICENSE file.
+
 
