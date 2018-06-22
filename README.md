@@ -1,7 +1,7 @@
 # Surfel-based Mapping using 3D Laser Range Data
 
 Mapping of 3d laser range data from a rotating laser range scanner, e.g., the Velodyne HDL-64E.
-For representing the map, we use surfels that enables fast rendering of the map for point-to-plane ICP.
+For representing the map, we use surfels that enables fast rendering of the map for point-to-plane ICP and loop closure detection.
 
 ## Publication
 
@@ -11,12 +11,12 @@ J. Behley, C. Stachnis. *Efficient Surfel-Based SLAM using 3D Laser Range Data i
 
 The BibTeX entry for the paper is:  
     
-			@inproceedings{behley2018rss, 
-					author = {Jens Behley and Cyrill Stachniss},
-					title  = {Efficient Surfel-Based SLAM using 3D Laser Range Data in Urban Environments},
-					booktitle = {Proc.~of Robotics: Science and Systems~(RSS)},
-					year = {2018}  
-			}
+	@inproceedings{behley2018rss, 
+			author = {Jens Behley and Cyrill Stachniss},
+			title  = {Efficient Surfel-Based SLAM using 3D Laser Range Data in Urban Environments},
+			booktitle = {Proc.~of Robotics: Science and Systems~(RSS)},
+			year = {2018}  
+	}
 
 
 ##  Dependencies
