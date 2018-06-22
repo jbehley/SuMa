@@ -7,7 +7,7 @@ For representing the map, we use surfels that enables fast rendering of the map 
 
 If you use our implementation in your academic work, please cite the corresponding paper:
 
-J. Behley, C. Stachnis. *Efficient Surfel-Based SLAM using 3D Laser Range Data in Urban Environments*, Proc. of Robotics: Science and Systems (RSS), 2018.
+J. Behley, C. Stachniss. *Efficient Surfel-Based SLAM using 3D Laser Range Data in Urban Environments*, Proc. of Robotics: Science and Systems (RSS), 2018.
 
 The BibTeX entry for the paper is:  
     
