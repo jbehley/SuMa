@@ -43,27 +43,24 @@ sudo pip install catkin_tools catkin_tools_fetch empy
 If you do not have a catkin workspace already, create one:
 ```bash
 cd
-mkdir catkin_ws
-cd catkin_ws
-mkdir src
+mkdir -p catkin_ws/src && cd catkin_ws
 catkin init
-cd src
-git clone https://github.com/ros/catkin.git
+cd src && git clone https://github.com/ros/catkin.git
 ```
-Clone the repository in your catkin workspace:
+Clone the repository in the `src` directory of your catkin workspace:
 ```bash
-cd ~/catkin_ws/src
 git clone https://github.com/jbehley/SuMa.git
 ```
-Download the additional dependencies (or clone glow into your catkin workspace `src` yourself):
+Download the additional dependencies (or clone `glow` into your catkin workspace `src` yourself):
 ```bash
 catkin deps fetch
 ```
 
 For the first setup of your workspace containing this project, you need:
   ```bash
-$ catkin build --save-config -i --cmake-args -DCMAKE_BUILD_TYPE=Release -DOPENGL_VERSION=430 -DENABLE_NVIDIA_EXT=YES
+catkin build --save-config -i --cmake-args -DCMAKE_BUILD_TYPE=Release -DOPENGL_VERSION=430 -DENABLE_NVIDIA_EXT=YES
   ```
+  
   Where you have to set `OPENGL_VERSION` to the supported OpenGL core profile version of your system, which you can query as follows:
 
 ```bash
