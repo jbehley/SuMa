@@ -210,7 +210,7 @@ void SurfelMapping::processScan(const rv::Laserscan& scan) {
 
 void SurfelMapping::integrateLoopClosures() {
   if (currentlyOptimizing_) {
-    if (optimizeFuture_.wait_for(std::chrono::milliseconds(5)) == std::future_status::ready) {
+    // if (optimizeFuture_.wait_for(std::chrono::milliseconds(5)) == std::future_status::ready) { // comment this condition since it will bring uncertainty to the results
       //      std::cout << "<<< optimization finished! at t = " << timestamp_ << std::endl;
 
       std::vector<Eigen::Matrix4f> casted_poses;
@@ -249,7 +249,7 @@ void SurfelMapping::integrateLoopClosures() {
         trajectory_distances_[t] = distance;
         last = posegraph_->pose(t).col(3);
       }
-    }
+    // }
   }
 }
 
@@ -673,7 +673,7 @@ void SurfelMapping::checkLoopClosure() {
     //    std::cout << "[info] Trigger optimization at " << timestamp_ << std::endl;
     optimizedPosegraph_ = posegraph_->clone();
     optimizeFuture_ = std::async(std::launch::async, std::bind(&SurfelMapping::optimizeAsync, this));
-    //    optimizeFuture_.wait();  // calling this synchronously to directly see the error.
+    optimizeFuture_.wait();  // calling this synchronously to directly see the error.
   }
 
   if (timeWithoutLoopClosure_ > 3) {
