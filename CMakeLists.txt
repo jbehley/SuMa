@@ -6,7 +6,7 @@ find_package(OpenGL REQUIRED)
 find_package(Qt5Gui REQUIRED) 
 find_package(Qt5OpenGL REQUIRED)
 find_package(GLEW REQUIRED)
-find_package(Boost REQUIRED COMPONENTS filesystem system)
+find_package(Boost REQUIRED COMPONENTS filesystem system thread serialization regex timer)
 
 find_package(GTSAM REQUIRED)
 
