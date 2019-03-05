@@ -12,7 +12,7 @@ using namespace rv;
 using namespace glow;
 
 Frame2Model::Frame2Model(const rv::ParameterList& params)
-    : JtJJtf_blend_(2, 8, TextureFormat::RGB_FLOAT),
+    : JtJJtf_blend_(2, 8, TextureFormat::RGBA_FLOAT),
       fbo_blend_(2, 8)  // blending for matrix comp.
 {
   params_ = params;
@@ -75,7 +75,7 @@ void Frame2Model::updateParameters() {
     else if (weighting_name == "stability")
       weight_function = 3;
     factor = params_["factor"];
-//    std::cout << "setting factor f = " << factor << std::endl;
+    //    std::cout << "setting factor f = " << factor << std::endl;
   }
 
   float fov_up = std::abs(float(params_["data_fov_up"]));
@@ -199,8 +199,18 @@ double Frame2Model::jacobianProducts(Eigen::MatrixXd& JtJ, Eigen::MatrixXd& Jtf)
 
   //  Stopwatch::tic();
 
+  // Note: Quick and dirty fix for RGB_FLOAT not in core profile problem:
+  // store everything in RGBA_FLOAT texture and throw away unused data.
+  std::vector<float> blending_temp(64);
+  JtJJtf_blend_.download(PixelFormat::RGBA, &blending_temp[0]);
+
   std::vector<float> blending(6 * 8);
-  JtJJtf_blend_.download(PixelFormat::RGB, &blending[0]);
+  for (uint32_t i = 0; i < 2 * 8; ++i) {
+    blending[3 * i] = blending_temp[4 * i];
+    blending[3 * i + 1] = blending_temp[4 * i + 1];
+    blending[3 * i + 2] = blending_temp[4 * i + 2];
+    blending[3 * i + 3] = blending_temp[4 * i + 3];
+  }
 
   for (uint32_t i = 0; i < 6 * 6; ++i) {
     JtJ.data()[i] = blending[i];
