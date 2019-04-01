@@ -1,0 +1,82 @@
+<config>
+
+  <!--   
+
+     Exemplary configuration file that worked in our setting. Most important parameters are the sensor-specific 
+     parameters: data_width, data_height, data_fov_up, data_fov_down. Note that corresponding "model_" parameters 
+     should match these parameters.
+
+     Disclaimer: Note that this might not work in a different setting. It's provided as an example and there are no 
+     guarantees  that it works "out-of-the-box" with your data.
+
+   --> 
+
+  <param name="data_width" type="integer">360</param> <!-- to large values usually lead to overlapping surfels. -->
+  <param name="data_height" type="integer">16</param>
+  <param name="data_fov_up" type="float">15</param>
+  <param name="data_fov_down" type="float">-15.0</param>
+  <param name="max iterations" type="integer">10</param>
+  <param name="stopping threshold" type="float">0.0001</param>
+  <param name="delta" type="float">0.0001</param>
+  <param name="icp-max-distance" type="float">3.0</param>
+  <param name="icp-max-angle" type="float">30.0</param>
+  <param name="max_depth" type="float">75.0</param>
+  <param name="min_depth" type="float">0.5</param> <!--- depending on the environment it might be that larger values are advisable -->
+
+  <param name="min_yaw" type="float">0.0</param>
+  <param name="max_yaw" type="float">0.0</param>
+  
+  <param name="weighting" type="string">huber</param> <!-- none, huber, turkey, stability. -->
+  <param name="factor" type="float">0.5</param> <!-- k, should this be max distance?! -->
+  <param name="distance_outliers" type="boolean">true</param>
+  
+  <param name="filter_vertexmap" type="boolean">false</param>
+  <param name="bilateral_sigma_space" type="float">2.5</param>
+  <param name="bilateral_sigma_range" type="float">2.5</param>
+  <param name="use_filtered_vertexmap" type="boolean">false</param>
+  
+  <param name="cutoff_threshold" type="float">20.0</param>
+  <param name="iterative_cutoff" type="boolean">false</param>
+  <param name="min_radius" type="float">0.05</param> 
+  <param name="max_radius" type="float">0.5</param>
+  
+  <param name="approach" type="string">frame-to-model</param>
+  <param name="model_width" type="integer">360</param>
+  <param name="model_height" type="integer">16</param>
+  <param name="model_fov_up" type="float">15.0</param>
+  <param name="model_fov_down" type="float">-15.0</param>
+  <param name="model_min_depth" type="float">0.0</param>
+  <param name="model_max_depth" type="float">100.0</param>
+  <param name="map-max-distance" type="float">0.2</param>
+  <param name="map-max-angle" type="float">60.0</param>
+  
+  <param name="unstable_age" type="integer">3</param>
+  <param name="confidence_mode" type="integer">3</param> <!-- 0 no, 1 angle, 2 distance, 3 both -->
+  <param name="confidence_threshold" type="float">0.0</param>
+  <param name="p_stable" type="float">0.6</param>
+  <param name="p_unstable" type="float">0.4</param>
+  <param name="p_prior" type="float">0.5</param>
+  
+  <param name="sigma_angle" type="float">1.0</param>
+  <param name="sigma_distance" type="float">1.0</param>
+  
+  <param name="initialize_identity" type="boolean">false</param>
+  <param name="radius_scale" type="float">1.0</param>
+  <param name="radius_factor" type="float">1.0</param>
+  
+  <param name="compose_rendering" type="boolean">true</param>
+  <param name="max_loop_closure_distance" type="float">2.0</param>
+  
+  <param name="fallback_mode" type="boolean">true</param>
+  <param name="fallback-max-distance" type="float">1.0</param>
+  <param name="fallback-max-angle" type="float">45.0</param>
+  
+  <param name="submap-extent" type="float">50</param>
+  <param name="submap-dimension" type="integer">2</param>
+  
+
+  <param name="history size" type="integer">100</param>
+  <param name="history stride" type="integer">20</param>
+  <param name="history points" type="integer">150000</param>
+
+</config>
