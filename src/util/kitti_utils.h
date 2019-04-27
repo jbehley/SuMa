@@ -4,6 +4,7 @@
 #include <string>
 #include <map>
 #include <eigen3/Eigen/Dense>
+#include <vector>
 
 /** \brief parse calibration file given in KITTI file format
  *  \author behley

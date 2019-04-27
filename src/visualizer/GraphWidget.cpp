@@ -1,5 +1,6 @@
 #include "GraphWidget.h"
 
+#include <cmath>
 #include <iostream>
 
 GraphWidget::Timeseries::Timeseries(const QColor& color, const Qt::PenStyle& style) : color_(color), style_{style} {}
