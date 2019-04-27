@@ -10,9 +10,9 @@
 #include "io/SimulationReader.h"
 #include "opengl/ObjReader.h"
 
+#include <core/SurfelMapping.h>
 #include <rv/string_utils.h>
 #include <boost/lexical_cast.hpp>
-#include <core/SurfelMapping.h>
 #include <fstream>
 #include <iostream>
 #include <vector>
@@ -32,7 +32,7 @@ using namespace glow;
 
 VisualizerWindow::VisualizerWindow() {
   ui_.setupUi(this);
-  lastDirectory_ = "~";
+  lastDirectory_ = QDir::homePath();
 
   // alternative icons (rcc) for windows/mac?
   ui_.actionOpenLaserscan->setIcon(QIcon::fromTheme("document-open"));
@@ -772,7 +772,7 @@ void VisualizerWindow::setScan(int idx) {
 }
 
 void VisualizerWindow::updateParameters() {
-//  std::cout << "updating params" << std::endl;
+  //  std::cout << "updating params" << std::endl;
   params_.insert(FloatParameter("confidence_threshold", ui_.spinConfidenceThreshold->value()));
   params_.insert(FloatParameter("icp-max-distance", ui_.spinIcpMaxDistance->value()));
   params_.insert(FloatParameter("icp-max-angle", ui_.spinIcpMaxAngle->value()));
@@ -838,7 +838,8 @@ void VisualizerWindow::initializeGraph() {
 }
 
 void VisualizerWindow::savePoses() {
-  QString retValue = QFileDialog::getSaveFileName(this, "Save poses", lastDirectory_, "Pose file(*.txt)");
+  QString defaultFilename = QDir(lastDirectory_).filePath("poses.txt");
+  QString retValue = QFileDialog::getSaveFileName(this, "Save poses", defaultFilename, "Pose file(*.txt)");
 
   if (!retValue.isNull() && fusion_ != nullptr) {
     //    Eigen::Matrix4f Tr = calib_["Tr"];
