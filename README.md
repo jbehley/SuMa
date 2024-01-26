@@ -21,45 +21,21 @@ The BibTeX entry for the paper is:
 
 ##  Dependencies
 
-* catkin
 * Qt5 >= 5.2.1
 * OpenGL >= 3.3
 * libEigen >= 3.2
-* gtsam >= 4.0
 
-In Ubuntu 16.04: Installing all dependencies should be accomplished by
+In Ubuntu 22.04/20.04: Installing all dependencies is accomplished by:
 ```bash
-sudo apt-get install build-essential cmake libgtest-dev libeigen3-dev libboost-all-dev qtbase5-dev libglew-dev libqt5libqgtk2 catkin
-```
-
-Additionally, make sure you have [catkin-tools](https://catkin-tools.readthedocs.io/en/latest/) and the [fetch](https://github.com/Photogrammetry-Robotics-Bonn/catkin_tools_fetch) verb installed:
-```bash
-sudo apt install python-pip
-sudo pip install catkin_tools catkin_tools_fetch empy
+  $  sudo apt-get install -y build-essential cmake libeigen3-dev libboost-all-dev qtbase5-dev libglew-dev
 ```
 
 ## Build
 
-If you do not have a catkin workspace already, create one:
-```bash
-cd
-mkdir -p catkin_ws/src && cd catkin_ws
-catkin init
-cd src && git clone https://github.com/ros/catkin.git
 ```
-Clone the repository in the `src` directory of your catkin workspace:
-```bash
-git clone https://github.com/jbehley/SuMa.git
+  $ mkdir build && cd build
+  $ cmake .. -DCMAKE_BUILD_TYPE=Release -DOPENGL_VERSION=430 -DENABLE_NVIDIA_EXT=YES
 ```
-Download the additional dependencies (or clone `glow` into your catkin workspace `src` yourself):
-```bash
-catkin deps fetch
-```
-
-For the first setup of your workspace containing this project, you need:
-  ```bash
-catkin build --save-config -i --cmake-args -DCMAKE_BUILD_TYPE=Release -DOPENGL_VERSION=430 -DENABLE_NVIDIA_EXT=YES
-  ```
   
   Where you have to set `OPENGL_VERSION` to the supported OpenGL core profile version of your system, which you can query as follows:
 
@@ -77,10 +53,8 @@ OpenGL shading language version string: 4.50 NVIDIA
  Here the line `OpenGL core profile version string: 4.3.0 NVIDIA 367.44` is important and therefore you should use `-DOPENGL_VERSION = 430`. If you are unsure you can also leave it on the default version `330`, which should be supported by all OpenGL-capable devices.
 
  If you have a NVIDIA device, like a Geforce or Quadro graphics card, you should also activate the NVIDIA extensions using `-DENABLE_NVIDIA_EXT=YES` for info about the current GPU memory usage of the program.
-
- After this setup steps, you can build with `catkin build`, since the configuration has been saved to your current Catkin profile (therefore, `--save-config` was needed).
  
- Now the project root directory (e.g. `~/catkin_ws/src/SuMa`) should contain a `bin` directory containing the visualizer.
+ Now the project root directory should contain a `bin` directory containing the visualizer.
 
 ## How to run and use it?
 

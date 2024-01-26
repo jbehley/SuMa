@@ -1,52 +1,38 @@
-cmake_minimum_required(VERSION 3.2.0)
+cmake_minimum_required(VERSION 3.16...3.25)
 
-project(surfel_mapping)
+project(surfel_mapping VERSION 0.1 DESCRIPTION "SuMa --Surfel-based Mapping using LiDAR scans" LANGUAGES C CXX)
+
+set(OPENGL_VERSION "430" CACHE STRING "" FORCE)
+set(ENABLE_NVIDIA_EXT On CACHE BOOL "" FORCE)
+
+include(external/find_dependencies.cmake)
+
+set(CMAKE_INCLUDE_CURRENT_DIR ON) # needs to be activated for qt generated files in build directory.
+set(CMAKE_AUTOMOC ON)
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_FLAGS_DEBUG "-g3 -O0 -UDEBUG_GL -UDEBUG")
+set(CMAKE_CXX_FLAGS_RELEASE "-g0 -O3 -DNDEBUG")
 
 find_package(OpenGL REQUIRED)
 find_package(Qt5Gui REQUIRED) 
 find_package(Qt5OpenGL REQUIRED)
 find_package(GLEW REQUIRED)
-find_package(Boost REQUIRED COMPONENTS filesystem system thread serialization regex timer)
-
-find_package(GTSAM REQUIRED)
-
-find_package(catkin COMPONENTS glow)
-
-catkin_package(
-  INCLUDE_DIRS src
-  LIBRARIES suma
-  CATKIN_DEPENDS
-    glow
-  DEPENDS
-    Boost
-)
-
-include_directories(${catkin_INCLUDE_DIRS})
-
-set(CMAKE_INCLUDE_CURRENT_DIR ON) # needs to be activated for qt generated files in build directory.
-set(CMAKE_AUTOMOC ON)
-set(CMAKE_CXX_FLAGS "-std=c++11 -O3  -Wall ${CMAKE_CXX_FLAGS}")
-set(CMAKE_CXX_FLAGS "-UDEBUG_GL -UDEBUG -DNDEBUG -g2 ${CMAKE_CXX_FLAGS}")
-
+find_package(Boost REQUIRED COMPONENTS filesystem system timer date_time)
+find_package(Eigen3 REQUIRED)
 
 # since now everything resides in "bin", we have to copy some stuff.
-  
+set(CMAKE_BUILD_TYPE Release)
 SET(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)
 
-include_directories(${QT5_INCLUDE_DIRS} ${GLEW_INCLUDE_DIRS} ${GTSAM_INCLUDE_DIRS} /usr/include/eigen3)
-include_directories(src/)
-
-option(ENABLE_NVIDIA_EXT "Enable Nvidia GL capabilites." OFF)
-set(OPENGL_VERSION 330 CACHE STRING "Available OpenGL version")
+include_directories(src)
 
 if(ENABLE_NVIDIA_EXT)
-  message("Enabling Nvidia OpenGL extensions.")
+  message(STATUS "[SuMa] Enabling Nvidia OpenGL extensions.")
   add_definitions(-DQUERY_MEMORY_NV)
 endif()
 
 add_definitions(-D__GL_VERSION=${OPENGL_VERSION})
-message(STATUS "Using OpenGL version ${OPENGL_VERSION}.")
-
+message(STATUS "[SuMa] Using OpenGL version ${OPENGL_VERSION}.")
 
 set(COMP_SHADER_SRC ${CMAKE_BINARY_DIR}/computation_shaders.cpp)
 set(VIZ_SHADER_SRC ${CMAKE_BINARY_DIR}/visualization_shaders.cpp)
@@ -111,7 +97,6 @@ COMPILE_SHADERS(${VIZ_SHADER_SRC}
   src/shader/draw_residuals.frag
   src/shader/draw_mesh.vert
   src/shader/draw_mesh.frag
-
   
   src/shader/draw_posegraph_edge.geom
 
@@ -152,7 +137,6 @@ add_library(suma
    ${COMP_SHADER_SRC})
    
 add_executable(visualizer
-
   src/io/KITTIReader.cpp
   src/io/SimulationReader.cpp
   src/io/RobocarReader.cpp
@@ -170,8 +154,9 @@ add_executable(visualizer
   src/visualizer/GraphWidget.cpp
   src/visualizer/ViewportWidget.cpp
   src/visualizer/VisualizerWindow.cpp
-	src/visualizer/visualizer.cpp)
+  src/visualizer/visualizer.cpp)
 
+    
 add_executable(genvideo
   ${VIZ_SHADER_SRC}
   
@@ -182,32 +167,13 @@ add_executable(genvideo
   src/visualizer/ViewportWidget.cpp
   src/io/KITTIReader.cpp
   src/util/kitti_utils.cpp
+  
   src/genvideo.cpp)
+  
+enable_testing()
+add_subdirectory(test)
 
-if(NOT GTEST_FOUND)
- 
-  IF(IS_DIRECTORY "/usr/src/gtest/")
-    MESSAGE(STATUS "Found google test sources in /usr/src/gtest/") 
-    
-    ADD_SUBDIRECTORY(/usr/src/gtest/ gtest)
-    
-    # mimick the behaviour of find_package(GTest)
-    SET(GTEST_FOUND TRUE)
-    SET(GTEST_BOTH_LIBRARIES gtest gtest_main)
-    SET(GTEST_LIBRARIES gtest)
-    SET(GTEST_MAIN_LIBRARIES gtest_main)
-  ELSE()
-    find_package(GTest)
-  ENDIF()
-endif()
-
-
-if(GTEST_FOUND)
-  enable_testing()
-  add_subdirectory(test)
-endif()
-
-target_link_libraries(robovision ${catkin_LIBRARIES} ${Boost_LIBRARIES} ${OPENGL_LIBRARIES} ${GLEW_LIBRARIES}  gtsam pthread)
-target_link_libraries(suma ${catkin_LIBRARIES} ${Boost_LIBRARIES} ${OPENGL_LIBRARIES} ${GLEW_LIBRARIES}  gtsam pthread robovision)
-target_link_libraries(visualizer suma ${catkin_LIBRARIES} ${Boost_LIBRARIES} ${OPENGL_LIBRARIES} ${GLEW_LIBRARIES}  gtsam  pthread robovision Qt5::OpenGL Qt5::Widgets)
-target_link_libraries(genvideo suma ${catkin_LIBRARIES} ${Boost_LIBRARIES} ${OPENGL_LIBRARIES} ${GLEW_LIBRARIES}  gtsam pthread robovision Qt5::OpenGL Qt5::Widgets)
+target_link_libraries(robovision ${Boost_LIBRARIES})
+target_link_libraries(suma robovision glow gtsam pthread)
+target_link_libraries(visualizer suma glow_util Qt5::OpenGL Qt5::Widgets)
+target_link_libraries(genvideo suma glow_util Qt5::OpenGL Qt5::Widgets)
