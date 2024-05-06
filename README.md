@@ -35,6 +35,7 @@ In Ubuntu 22.04/20.04: Installing all dependencies is accomplished by:
 ```
   $ mkdir build && cd build
   $ cmake .. -DCMAKE_BUILD_TYPE=Release -DOPENGL_VERSION=430 -DENABLE_NVIDIA_EXT=YES
+  $ make -j5
 ```
   
   Where you have to set `OPENGL_VERSION` to the supported OpenGL core profile version of your system, which you can query as follows:
